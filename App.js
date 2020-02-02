@@ -1,6 +1,8 @@
-import {DetailsScreen} from './DetailsScreen';
-import {EditScreen} from './EditScreen';
-import {HomeScreen} from './HomeScreen';
+import * as NavigationService from './src/services/NavigationService';
+
+import {DetailsScreen} from './src/screens/DetailsScreen';
+import {EditScreen} from './src/screens/EditScreen';
+import {HomeScreen} from './src/screens/HomeScreen';
 import {Provider} from 'react-redux';
 import React from 'react';
 import {createAppContainer} from 'react-navigation';
@@ -21,10 +23,13 @@ const RootStack = createStackNavigator(
 const AppContainer = createAppContainer(RootStack);
 
 export default class App extends React.Component {
+  componentDidMount() {
+    NavigationService.setNavigator(this.navigator);
+  }
   render() {
     return (
       <Provider store={store}>
-        <AppContainer />
+        <AppContainer ref={nav => (this.navigator = nav)} />
       </Provider>
     );
   }

@@ -1,4 +1,5 @@
 import * as ActionTypes from '../actions/ActionTypes';
+import * as NavigationService from '../services/NavigationService';
 
 const initialState = {
   usersList: [],
@@ -31,6 +32,7 @@ const userReducer = (state = initialState, action) => {
     }
     case ActionTypes.DELETE_USER_ITEM_SUCCESS:
     case ActionTypes.CREATE_USER_ITEM_SUCCESS: {
+      NavigationService.goBack({});
       return {
         ...state,
         isLoading: false,

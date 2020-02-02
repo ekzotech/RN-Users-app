@@ -1,4 +1,4 @@
-import * as ActionTypes from './src/actions/ActionTypes';
+import * as ActionTypes from '../actions/ActionTypes';
 
 import {
   ActivityIndicator,
@@ -14,7 +14,7 @@ import {
   decrementListPage,
   getUsersList,
   incrementListPage,
-} from './src/actions/userActions';
+} from '../actions/userActions';
 
 import React from 'react';
 import {connect} from 'react-redux';
@@ -32,6 +32,14 @@ export class Home extends React.Component {
     };
   }
 
+  static navigationOptions = ({navigation}) => {
+    return {
+      headerRight: () => (
+        <Button onPress={() => navigation.navigate('Edit')} title="Add" />
+      ),
+    };
+  };
+
   componentDidMount() {
     this.props.getUsersList(this.props.listPage);
   }
@@ -40,7 +48,9 @@ export class Home extends React.Component {
     return (
       <TouchableOpacity
         style={styles.userCardWrapper}
-        onPress={() => this.props.navigation.navigate('Details')}>
+        onPress={() =>
+          this.props.navigation.navigate('Details', {user: {...user}})
+        }>
         <View style={styles.userCard}>
           <Image source={{uri: user.avatar}} style={styles.userCardAvatar} />
           <View style={styles.userCardInfoWrapper}>
@@ -137,26 +147,10 @@ const mapStateToProps = state => {
   };
 };
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     getUsersList: () =>
-//       dispatch({
-//         type: ActionTypes.GET_USERS_LIST,
-//       }),
-//   };
-// };
-
-// const mapDispatchToProps = ({dispatch}) => ({
-//   getUsersList: () => {
-//     dispatch(getUsersList());
-//   },
-// });
-
 const mapDispatchToProps = {
   getUsersList,
   incrementListPage,
   decrementListPage,
 };
 
-// export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
 export const HomeScreen = connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -15,8 +15,9 @@ function* createUserData(action) {
 }
 
 function* deleteUserItem(action) {
+  console.log('delete action ', action);
   try {
-    const response = yield call(API.delete, `/users/${action.userId}`);
+    const response = yield call(API.delete, `/users/${action.payload}`);
     yield put(UserActions.deleteUserItemSuccess(response));
   } catch (e) {
     yield put(UserActions.deleteUserItemError(e.message));
@@ -38,7 +39,7 @@ function* updateUserItem(action) {
 
 function* getUserItem(action) {
   try {
-    const response = yield call(API.get, `/users/${action.userId}`);
+    const response = yield call(API.get, `/users/${action.payload}`);
     yield put(UserActions.getUserItemSuccess(response));
   } catch (e) {
     yield put(UserActions.getUserItemError(e.message));
