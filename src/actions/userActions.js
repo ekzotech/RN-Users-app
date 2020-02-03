@@ -17,7 +17,8 @@ export const createUserItemError = error => ({
 
 export const updateUserItem = payloadData => ({
   type: ActionTypes.UPDATE_USER_ITEM,
-  payload: payloadData,
+  payload: payloadData.user,
+  userId: payloadData.userId,
 });
 
 export const updateUserItemSuccess = payloadData => ({
@@ -82,5 +83,10 @@ export const incrementListPage = payloadData => ({
 
 export const decrementListPage = payloadData => ({
   type: ActionTypes.DECREMENT_PAGE,
+  payload: payloadData,
+});
+
+export const setCurrentUser = payloadData => ({
+  type: ActionTypes.SET_CURRENT_USER,
   payload: payloadData,
 });

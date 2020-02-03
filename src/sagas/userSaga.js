@@ -15,7 +15,6 @@ function* createUserData(action) {
 }
 
 function* deleteUserItem(action) {
-  console.log('delete action ', action);
   try {
     const response = yield call(API.delete, `/users/${action.payload}`);
     yield put(UserActions.deleteUserItemSuccess(response));
@@ -85,6 +84,17 @@ function* decrementPage(action) {
   }
 }
 
+function* setCurrentUser(action) {
+  try {
+    yield put({
+      type: ActionTypes.SET_CURRENT_USER_SUCCESS,
+      payload: action.payload,
+    });
+  } catch (e) {
+    console.log('error ', e);
+  }
+}
+
 export function* watchCreateUser() {
   yield takeLatest(ActionTypes.CREATE_USER_ITEM, createUserData);
 }
@@ -122,5 +132,6 @@ export default function* root() {
     yield takeLatest(ActionTypes.GET_USERS_LIST, fetchUsersData),
     yield takeLatest(ActionTypes.INCREMENT_PAGE, incrementPage),
     yield takeLatest(ActionTypes.DECREMENT_PAGE, decrementPage),
+    yield takeLatest(ActionTypes.SET_CURRENT_USER, setCurrentUser),
   ];
 }

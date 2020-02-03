@@ -14,6 +14,7 @@ import {
   decrementListPage,
   getUsersList,
   incrementListPage,
+  setCurrentUser,
 } from '../actions/userActions';
 
 import React from 'react';
@@ -48,9 +49,11 @@ export class Home extends React.Component {
     return (
       <TouchableOpacity
         style={styles.userCardWrapper}
-        onPress={() =>
-          this.props.navigation.navigate('Details', {user: {...user}})
-        }>
+        onPress={() => {
+          // this.props.navigation.navigate('Details', {user: {...user}})
+          this.props.navigation.navigate('Details');
+          this.props.setCurrentUser(user);
+        }}>
         <View style={styles.userCard}>
           <Image source={{uri: user.avatar}} style={styles.userCardAvatar} />
           <View style={styles.userCardInfoWrapper}>
@@ -151,6 +154,7 @@ const mapDispatchToProps = {
   getUsersList,
   incrementListPage,
   decrementListPage,
+  setCurrentUser,
 };
 
 export const HomeScreen = connect(mapStateToProps, mapDispatchToProps)(Home);

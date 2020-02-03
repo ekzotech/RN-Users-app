@@ -17,20 +17,14 @@ export class Details extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: this.props.navigation.state.params.user,
+      currentUser: this.props.currentUser,
       imageHeight: null,
     };
-    console.log('this.props ', this.props);
-    console.log('this.navigation ', this.navigation);
-    console.log('this.route ', this.route);
-    console.log('user', this.props.navigation.state.params.user);
   }
 
   componentDidMount() {
-    // this.setState({currentUser: this.props.navigation.state.params.user});
-    console.log('this.state ', this.state);
-    if (this.state.currentUser.avatar != null) {
-      Image.getSize(this.state.currentUser.avatar, (width, height) => {
+    if (this.props.currentUser.avatar != null) {
+      Image.getSize(this.props.currentUser.avatar, (width, height) => {
         const screenWidth = Dimensions.get('window').width;
         const scaleFactor = width / screenWidth;
         const imageHeight = height / scaleFactor;
@@ -43,9 +37,9 @@ export class Details extends React.Component {
     return (
       <View style={styles.containerWrapper}>
         <ScrollView style={{flex: 1, width: '100%'}}>
-          {this.state.currentUser.avatar != null && (
+          {this.props.currentUser.avatar != null && (
             <Image
-              source={{uri: this.state.currentUser.avatar}}
+              source={{uri: this.props.currentUser.avatar}}
               style={{
                 width: '100%',
                 height: this.state.imageHeight,
@@ -55,16 +49,16 @@ export class Details extends React.Component {
           )}
           <View style={styles.userInfoWrapper}>
             <Text style={styles.userName}>
-              {this.state.currentUser.first_name}{' '}
-              {this.state.currentUser.last_name}
+              {this.props.currentUser.first_name}{' '}
+              {this.props.currentUser.last_name}
             </Text>
-            <Text style={styles.userEmail}>{this.state.currentUser.email}</Text>
+            <Text style={styles.userEmail}>{this.props.currentUser.email}</Text>
           </View>
           <Button
             title={'Edit'}
             onPress={() => {
               this.props.navigation.navigate('Edit', {
-                user: {...this.state.currentUser},
+                user: {...this.props.currentUser},
               });
             }}
           />
@@ -73,7 +67,7 @@ export class Details extends React.Component {
             title={'Delete user'}
             color="#fa3030"
             onPress={() => {
-              this.props.deleteUserItem(this.state.currentUser.id);
+              this.props.deleteUserItem(this.props.currentUser.id);
             }}
           />
         </ScrollView>
@@ -95,8 +89,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  console.log('state ', state);
-
   return {
     usersList: state.userReducer.usersList,
     listPage: state.userReducer.listPage,

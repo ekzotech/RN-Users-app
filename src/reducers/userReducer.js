@@ -48,6 +48,7 @@ const userReducer = (state = initialState, action) => {
       };
     }
     case ActionTypes.UPDATE_USER_ITEM_SUCCESS: {
+      NavigationService.goBack({});
       return {
         ...state,
         currentUser: action.payload,
@@ -75,6 +76,12 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         listPage: state.listPage - action.payload,
+      };
+    }
+    case ActionTypes.SET_CURRENT_USER_SUCCESS: {
+      return {
+        ...state,
+        currentUser: action.payload,
       };
     }
     default: {

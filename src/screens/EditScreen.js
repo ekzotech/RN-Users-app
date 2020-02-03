@@ -12,10 +12,8 @@ import {connect} from 'react-redux';
 export class Edit extends React.Component {
   constructor(props) {
     super(props);
-    console.log('this.props ', this.props);
 
     const userString = JSON.stringify(this.props.navigation.getParam('user'));
-    console.log('user ', userString);
     const user = userString ? JSON.parse(userString) : {};
     const isEdit = userString != null ? true : false;
     this.state = {
@@ -26,7 +24,6 @@ export class Edit extends React.Component {
       email: isEdit ? user.email : '',
       mode: isEdit ? 'edit' : 'new',
     };
-    console.log('isEdit ', isEdit);
   }
 
   render() {
@@ -65,18 +62,43 @@ export class Edit extends React.Component {
         <Text style={styles.textFieldLabel}>email:</Text>
         <View style={styles.inputWrapper}>
           <TextInput
-            value={this.state.lastName}
+            value={this.state.email}
             onChangeText={text => this.setState({email: text})}
             placeholder="Type in email"
             maxLength={255}
           />
         </View>
-        <Button
-          title={'Back'}
-          onPress={() => {
-            this.props.navigation.goBack();
-          }}
-        />
+        {this.state.mode === 'new' && (
+          <Button
+            title={'Create user'}
+            onPress={() => {
+              const user = {
+                first_name: this.state.firstName,
+                last_name: this.state.lastName,
+                email: this.state.email,
+                avatar: this.state.avatar,
+              };
+              this.props.createUserItem(user);
+            }}
+          />
+        )}
+        {this.state.mode === 'edit' && (
+          <Button
+            title={'Save changes'}
+            onPress={() => {
+              const newUser = {
+                first_name: this.state.firstName,
+                last_name: this.state.lastName,
+                email: this.state.email,
+                avatar: this.state.avatar,
+              };
+              this.props.updateUserItem({
+                user: newUser,
+                userId: this.state.currentUser.id,
+              });
+            }}
+          />
+        )}
       </View>
     );
   }
@@ -101,8 +123,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  console.log('state ', state);
-
   return {
     usersList: state.userReducer.usersList,
     listPage: state.userReducer.listPage,
